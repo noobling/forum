@@ -9,17 +9,31 @@ class ThreadsTest extends TestCase
 {
     use RefreshDatabase;
     
+    public function setUp()
+    {
+        parent::setUp();
+
+        $this->thread = factory('App\Thread')->create();
+    }
+
     /** @test */
     public function a_user_can_browse_threads()
     {
-        $thread = factory('App\Thread')->create();
+        $this->get('/threads')
+            ->assertStatus(200)
+            ->assertSee($this->thread->title);
 
-        $response = $this->get('/threads');
+        $this->get('/threads/' . $this->thread->id)
+            ->assertSee($this->thread->title);
+    }
 
-        $response->assertStatus(200);
-        $response->assertSee($thread->title);
+    /** @test */
+    public function a_user_can_view_replies_on_a_thread()
+    {
+        $reply = factory('App\Reply')->create(['thread_id' => $this->thread->id]);
 
-        $response = $this->get('/threads/' . $thread->id);
-        $response->assertSee($thread->title);
+        $this->get('/threads/' . $this->thread->id)
+            ->assertSee($reply->body);
+
     }
 }
