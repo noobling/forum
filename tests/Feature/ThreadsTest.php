@@ -23,7 +23,7 @@ class ThreadsTest extends TestCase
             ->assertStatus(200)
             ->assertSee($this->thread->title);
 
-        $this->get('/threads/' . $this->thread->id)
+        $this->get($this->thread->path())
             ->assertSee($this->thread->title);
     }
 
@@ -32,7 +32,7 @@ class ThreadsTest extends TestCase
     {
         $reply = factory('App\Reply')->create(['thread_id' => $this->thread->id]);
 
-        $this->get('/threads/' . $this->thread->id)
+        $this->get($this->thread->path())
             ->assertSee($reply->body);
 
     }

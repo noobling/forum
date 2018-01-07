@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
 {
+    protected $guarded = [];
+
     public function owner()
     {
         // Have to explicit with the foreign key id since we are not using user but owner
