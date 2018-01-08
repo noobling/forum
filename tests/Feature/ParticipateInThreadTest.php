@@ -12,11 +12,11 @@ class ParticipateInThreadTest extends TestCase
     /** @test */
     public function authenticated_user_can_create_a_reply_to_thread()
     {
-        $this->be($user = factory('App\User')->create());
+        $this->signIn();
 
-        $reply = factory('App\Reply')->make();
+        $reply = make('App\Reply');
 
-        $thread = factory('App\Thread')->create();
+        $thread = create('App\Thread');
 
         $this->post($thread->path() . '/replies', $reply->toArray());
             
