@@ -9,7 +9,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class CreateThreadsTest extends TestCase
 {
     use RefreshDatabase;
-
     /** @test */
     public function an_authenticated_user_can_create_thread()
     {
@@ -34,5 +33,13 @@ class CreateThreadsTest extends TestCase
         $thread = make('App\Thread');
 
         $this->post('/threads', $thread->toArray());
+    }
+
+    /** @test */
+    public function a_guest_cannot_see_create_thread_page()
+    {
+        $this->withExceptionHandling()
+            ->get('/threads/create')
+            ->assertRedirect('/login');
     }
 }
