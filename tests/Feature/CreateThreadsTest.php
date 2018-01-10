@@ -14,7 +14,7 @@ class CreateThreadsTest extends TestCase
     {
         $this->signIn();
 
-        $thread = make('App\Thread');
+        $thread = create('App\Thread');
 
         $this->post('/threads', $thread->toArray());
 
@@ -34,6 +34,14 @@ class CreateThreadsTest extends TestCase
             ->assertRedirect('/login');
         
         $this->post('/threads')
+            ->assertRedirect('/login');
+    }
+
+    /** @test */
+    public function a_guest_cannot_see_create_thread_page()
+    {
+        $this->withExceptionHandling()
+            ->get('/threads/create')
             ->assertRedirect('/login');
     }
 }
