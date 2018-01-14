@@ -36,4 +36,17 @@ class ThreadsTest extends TestCase
             ->assertSee($reply->body);
 
     }
+
+    /** @test */
+    function a_user_can_filter_threads_with_a_channel()
+    {
+        $channel = create('App\Channel');
+
+        $threadInChannel = create('App\Thread', ['channel_id' => $channel->id]);
+        $threadNotInChannel = create('App\Thread');
+
+        $this->get("/threads/{$channel->slug}")
+            ->assertSee($threadInChannel->body)
+            ->assertDontSee($threadNotInChannel->body);
+    }
 }
