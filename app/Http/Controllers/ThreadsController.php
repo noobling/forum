@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 class ThreadsController extends Controller
 {
     /**
-     * Requre user to be logged in to use this method
+     * Require user to be logged in to use this method
      */
     public function __construct()
     {
