@@ -20,7 +20,7 @@ abstract class TestCase extends BaseTestCase
      * Creates and signs in a user
      * 
      * @param App\User $user
-     * @return 
+     * @return $this
      */
     protected function signIn($user = null)
     {
