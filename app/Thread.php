@@ -13,6 +13,14 @@ class Thread extends Model
      */
     protected $guarded = [];
 
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::addGlobalScope('replyCount', function($builder) {
+            $builder->withCount('replies');
+        });
+    }
     /**
      * Get an endpoint for the thread
      * 
