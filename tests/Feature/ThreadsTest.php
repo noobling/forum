@@ -8,7 +8,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 class ThreadsTest extends TestCase
 {
     use RefreshDatabase;
-    
+
+    protected $thread;
+
     public function setUp()
     {
         parent::setUp();
@@ -62,4 +64,21 @@ class ThreadsTest extends TestCase
             ->assertSee($johndoeThread->title)
             ->assertDontSee($notJohndoeThread->title);
     }
+
+    /** @test */
+    function a_user_can_filter_threads_by_popularity()
+    {
+        $threadWithThreeReplies = create('App\Thread');
+        create('App\Reply', ['thread_id' => $threadWithThreeReplies->id], 3);
+
+        $threadWithTwoReplies = create('App\Thread');
+        create('App\Reply', ['thread_id' => $threadWithTwoReplies->id], 2);
+
+        $threadWith0Replies = $this->thread;
+
+        $response = $this->getJson('threads?popular=1')->json();
+
+        $this->assertEquals([3, 2, 0], array_column($response, 'replies_count'));
+    }
+
 }
