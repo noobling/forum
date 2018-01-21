@@ -25,3 +25,6 @@ str_plural('string', integer)
 
 ## Filtering
 When your filter methods don't work you can use `model->toSql()` before the `get()` method.
+
+## Database
+Beware of too many database queries especially if you have a loop

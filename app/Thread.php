@@ -13,6 +13,13 @@ class Thread extends Model
      */
     protected $guarded = [];
 
+    /**
+     * A thread will always need info on the creator and channel
+     *
+     * @var array
+     */
+    protected $with = ['creator', 'channel'];
+
     protected static function boot()
     {
         parent::boot();
