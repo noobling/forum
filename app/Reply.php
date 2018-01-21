@@ -40,4 +40,14 @@ class Reply extends Model
             return $this->favourites()->create($attributes);
         }
     }
+
+    /**
+     * Has the current signed in user already favourited this reply?
+     *
+     * @return bool
+     */
+    public function isFavourited()
+    {
+        return $this->favourites()->where('user_id', auth()->id())->exists();
+    }
 }
