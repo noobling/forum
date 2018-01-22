@@ -5,7 +5,7 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><a href="#">{{ $thread->creator->name }}</a> said: {{ $thread->title }}
+                    <div class="panel-heading"><a href="{{ route('profiles', $thread->creator->name) }}">{{ $thread->creator->name }}</a> said: {{ $thread->title }}
                     </div>
                     <div class="panel-body">
                         {{ $thread->body }}
@@ -37,7 +37,7 @@
             <div class="col-md-4">
                 <div class="panel panel-default">
                     <div class="panel-body">
-                        {{ $thread->created_at->diffForHumans() }} by <a href="#">{{ $thread->creator->name }}</a>
+                        {{ $thread->created_at->diffForHumans() }} by <a href="{{ route('profiles', $thread->creator->name) }}">{{ $thread->creator->name }}</a>
                         with {{ $thread->replies_count }} {{ str_plural('reply', $thread->replies_count) }}.
                     </div>
                 </div>
