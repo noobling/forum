@@ -5,7 +5,21 @@
         <div class="row">
             <div class="col-md-8">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><a href="{{ route('profiles', $thread->creator->name) }}">{{ $thread->creator->name }}</a> said: {{ $thread->title }}
+                    <div class="panel-heading">
+                        <div class="level">
+                            <div class="flex">
+                                <a href="{{ route('profiles', $thread->creator->name) }}">{{ $thread->creator->name }}</a>
+                                said: {{ $thread->title }}
+                            </div>
+                            <form method="post" action="{{ $thread->path() }}">
+                                {{ csrf_field() }}
+                                {{ method_field('delete') }}
+
+                                <button type="submit" class="btn btn-primary-default">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
                     </div>
                     <div class="panel-body">
                         {{ $thread->body }}
