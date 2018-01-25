@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Activity;
 use App\Filters\ThreadFilters;
 use App\Channel;
 use App\Thread;
@@ -65,7 +66,6 @@ class ThreadsController extends Controller
             'body' => request('body'),
             'channel_id' => request('channel_id')
         ]);
-
 
         return redirect($thread->path());
     }

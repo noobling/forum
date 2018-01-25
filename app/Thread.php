@@ -6,6 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
 {
+    use RecordsActivity;
+
     /**
      * Don't auto-apply mass assignment protection.
      * 
@@ -27,7 +29,9 @@ class Thread extends Model
         static::addGlobalScope('replyCount', function($builder) {
             $builder->withCount('replies');
         });
+
     }
+
     /**
      * Get an endpoint for the thread
      * 
