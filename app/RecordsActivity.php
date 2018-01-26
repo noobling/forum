@@ -25,6 +25,20 @@ trait RecordsActivity
                 $model->recordActivity($event);
             });
         }
+
+        static::deleting(function($model) {
+            $model->activity()->delete();
+        });
+    }
+
+    /**
+     * Fetch the activity relationship.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\MorphMany
+     */
+    public function activity()
+    {
+        return $this->morphMany('App\Activity', 'subject');
     }
 
     /**
