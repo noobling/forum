@@ -81,4 +81,33 @@ class ThreadsTest extends TestCase
         $this->assertEquals([3, 2, 0], array_column($response, 'replies_count'));
     }
 
+    /** @test */
+    function an_unauthorized_user_cannot_delete_reply()
+    {
+        $this->withExceptionHandling();
+
+        $reply = create('App\Reply');
+
+        $this->delete('/replies/' . $reply->id)
+            ->assertRedirect('/login');
+
+        $this->signIn();
+        $this->delete('/replies/' . $reply->id)
+            ->assertStatus(403);
+
+        $this->assertDatabaseHas('replies', ['id' => $reply->id]);
+    }
+
+    /** @test */
+    function authorized_users_can_delete_reply()
+    {
+        $this->signIn();
+
+        $reply = create('App\Reply', ['user_id' => auth()->id()]);
+
+        $this->delete('/replies/' . $reply->id)
+            ->assertStatus(302);
+
+        $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
+    }
 }

@@ -11,6 +11,9 @@
 |
 */
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -25,8 +28,8 @@ Route::get('/profiles/{user}', 'ProfilesController@show')->name('profiles');
 // Route::resource('threads', 'ThreadsController');
 
 Route::post('threads/{channel}/{thread}/replies', 'RepliesController@store');
-
 Route::post('/replies/{reply}/favourites', 'FavouritesController@store');
+Route::delete('/replies/{reply}', 'RepliesController@destroy');
 
 Auth::routes();
 

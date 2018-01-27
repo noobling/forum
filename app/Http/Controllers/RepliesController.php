@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Reply;
 use Illuminate\Http\Request;
 use App\Thread;
 
@@ -35,5 +36,21 @@ class RepliesController extends Controller
 
         return back()
             ->with('flash', 'Created reply!');
+    }
+
+    /**
+     * @param Reply $reply
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function destroy(Reply $reply)
+    {
+        $this->authorize('update', $reply);
+
+        $reply->delete();
+
+        return back()
+            ->with('flash', 'Deleted reply');
     }
 }
