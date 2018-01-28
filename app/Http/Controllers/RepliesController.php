@@ -53,4 +53,15 @@ class RepliesController extends Controller
         return back()
             ->with('flash', 'Deleted reply');
     }
+
+    /**
+     * @param Reply $reply
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function update(Reply $reply)
+    {
+        $this->authorize('update', $reply);
+
+        $reply->update(request(['body']));
+    }
 }

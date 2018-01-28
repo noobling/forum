@@ -110,4 +110,32 @@ class ThreadsTest extends TestCase
 
         $this->assertDatabaseMissing('replies', ['id' => $reply->id]);
     }
+
+    /** @test */
+    function authorized_users_can_update_replies()
+    {
+        $this->signIn();
+
+        $reply = create('App\Reply', ['user_id' => auth()->id()]);
+        $replyBody = 'Changed the body';
+        $this->patch('/replies/' . $reply->id, ['body' => $replyBody]);
+
+        $this->assertDatabaseHas('replies', ['id' => $reply->id, 'body' => $replyBody]);
+    }
+
+    /** @test */
+    function unauthorized_users_cannot_update_replies()
+    {
+        $this->withExceptionHandling();
+
+        $reply = create('App\Reply');
+        $replyBody = 'Changed the body';
+        $this->patch('/replies/' . $reply->id, ['body' => $replyBody])
+            ->assertRedirect('/login');
+
+        $this->signIn();
+        $this->patch('/replies/' . $reply->id, ['body' => $replyBody])
+            ->assertStatus(403);
+
+    }
 }
