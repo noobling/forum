@@ -14,7 +14,16 @@ use Illuminate\Database\Eloquent\Model;
 trait Favouritable
 {
 
+    protected  static function bootFavouritable()
+    {
+        static::deleting(function($model) {
+           $model->favourites()->get()->each->delete();
+        });
+    }
+
     /**
+     * Gets the favourites for given model
+     *
      * @return \Illuminate\Database\Eloquent\Relations\MorphMany
      */
     public function favourites()
@@ -23,6 +32,8 @@ trait Favouritable
     }
 
     /**
+     * Favourite a model
+     *
      * @return Model
      */
     public function favourite()
@@ -39,7 +50,10 @@ trait Favouritable
     public function unfavourite()
     {
         $attributes = ['user_id' => auth()->id()];
-        $this->favourites()->where($attributes)->delete();
+        $this->favourites()->where($attributes)->get()->each(function ($favourite) {
+            // we need to call delete on the model in order for the deleting event to trigger
+            $favourite->delete();
+        });
     }
 
     /**

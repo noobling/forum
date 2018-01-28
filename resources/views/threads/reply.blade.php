@@ -8,13 +8,9 @@
                     </a>
                     said {{ $reply->created_at->diffForHumans() }}
                 </h5>
-                <favourite :reply="{{ $reply }}"></favourite>
-                {{--<form method="POST" action="/replies/{{ $reply->id }}/favourites">--}}
-                    {{--{{ csrf_field() }}--}}
-                    {{--<button class="btn btn-default" {{ $reply->isFavourited() ? 'disabled' : '' }}>--}}
-                        {{--{{ $reply->favourites_count }} {{ str_plural('Favourite', $reply->favourites_count) }}--}}
-                    {{--</button>--}}
-                {{--</form>--}}
+                @can('update', $reply)
+                    <favourite :reply="{{ $reply }}"></favourite>
+                @endcan
             </div>
 
         </div>
