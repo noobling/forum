@@ -18,6 +18,13 @@ class Reply extends Model
     protected $with = ['owner', 'favourites'];
 
     /**
+     * Passes these properties to Vue
+     *
+     * @var array
+     */
+    protected  $appends = ['favouritesCount', 'isFavourited'];
+
+    /**
      * A reply belongs to an owner
      * 
      * return \Illumintate\Database\Eloquent\Relations\BelongsTo

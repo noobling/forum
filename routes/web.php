@@ -18,20 +18,32 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+/**
+ * Threads routes
+ */
 Route::get('/threads/{channel}/{thread}', 'ThreadsController@show');
 Route::post('/threads', 'ThreadsController@store');
 Route::get('/threads/create', 'ThreadsController@create');
 Route::get('/threads/{channel?}', 'ThreadsController@index');
 Route::delete('/threads/{channel}/{thread}', 'ThreadsController@destroy');
 
-Route::get('/profiles/{user}', 'ProfilesController@show')->name('profiles');
-// Route::resource('threads', 'ThreadsController');
-
+/**
+ * Replies routes
+ */
 Route::post('threads/{channel}/{thread}/replies', 'RepliesController@store');
-Route::post('/replies/{reply}/favourites', 'FavouritesController@store');
 Route::delete('/replies/{reply}', 'RepliesController@destroy');
 Route::patch('/replies/{reply}', 'RepliesController@update');
 
+/**
+ * Favourites routes
+ */
+Route::post('/replies/{reply}/favourites', 'FavouritesController@store');
+Route::delete('/replies/{reply}/favourites', 'FavouritesController@destroy');
+
+/**
+ * Users Routes
+ */
 Auth::routes();
+Route::get('/profiles/{user}', 'ProfilesController@show')->name('profiles');
 
 Route::get('/home', 'HomeController@index')->name('home');

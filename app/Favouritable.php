@@ -34,6 +34,15 @@ trait Favouritable
     }
 
     /**
+     * Unfavourite the current reply
+     */
+    public function unfavourite()
+    {
+        $attributes = ['user_id' => auth()->id()];
+        $this->favourites()->where($attributes)->delete();
+    }
+
+    /**
      * Has the current signed in user already favourited this reply?
      *
      * @return bool
@@ -43,6 +52,21 @@ trait Favouritable
         return !!$this->favourites->where('user_id', auth()->id())->count();
     }
 
+    /**
+     * Fetch the current favourite status as a property
+     *
+     * @return bool
+     */
+    public function getIsFavouritedAttribute()
+    {
+        return $this->isFavourited();
+    }
+
+    /**
+     * Fetch the favourites count as a property
+     *
+     * @return mixed
+     */
     public function getFavouritesCountAttribute()
     {
         return $this->favourites->count();
