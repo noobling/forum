@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <thread-view inline-template>
+    <thread-view :initial-replies-count="{{ $thread->replies_count }}"inline-template>
     <div class="container">
         <div class="row">
             <div class="col-md-8">
@@ -29,6 +29,7 @@
                     </div>
                 </div>
 
+                <replies :data="{{ $thread->replies }}" @removed="repliesCount--"></replies>
 
                 {{--@foreach ($replies as $reply)--}}
                     {{--@include ('threads.reply')--}}
@@ -56,14 +57,14 @@
                 <div class="panel panel-default">
                     <div class="panel-body">
                         {{ $thread->created_at->diffForHumans() }} by <a href="{{ route('profiles', $thread->creator->name) }}">{{ $thread->creator->name }}</a>
-                        with {{ $thread->replies_count }} {{ str_plural('reply', $thread->replies_count) }}.
+                        with <span v-text="repliesCount"></span> {{ str_plural('reply', $thread->replies_count) }}.
                     </div>
                 </div>
             </div>
 
         </div>
-    </thread-view>
-    </div>
 
+    </div>
+    </thread-view>
 
 @endsection

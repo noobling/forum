@@ -56,6 +56,13 @@ if (token) {
 
 window.Vue = require('vue');
 
+// A global function accessible to all Vue components
+Vue.prototype.authorize = function(handler) {
+    let user = window.App.user;
+
+    return user ? handler(user) : false;
+}
+
 window.events = new Vue();
 
 window.flash = function (message) {

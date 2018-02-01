@@ -8,9 +8,9 @@
                     </a>
                     said {{ data.created_at }}
                 </h5>
-                <!--@can('update', $reply)-->
-                <!--<favourite :reply="{{ $reply }}"></favourite>-->
-                <!--@endcan-->
+                <span v-if="signedIn">
+                    <favourite :reply="data"></favourite>
+                </span>
             </div>
 
         </div>
@@ -33,7 +33,7 @@
         </div>
 
 
-        <div class="panel-footer level">
+        <div class="panel-footer level" v-if="canUpdate">
             <button type="submit" class="btn btn-danger mr-1" @click="destroy">Delete</button>
             <button class="btn btn-warning" @click="editing = true">Update</button>
         </div>
@@ -46,7 +46,7 @@
     export default {
         props: ['data'],
 
-        components: { Favourite },
+        components: {Favourite},
 
         data() {
             return {
@@ -54,6 +54,16 @@
                 id: this.data.id,
                 body: this.data.body,
             };
+        },
+
+        computed: {
+            signedIn() {
+                return window.App.signedIn;
+            },
+            canUpdate() {
+                return this.authorize(user => user.id === this.data.user_id);
+            }
+
         },
 
         methods: {
@@ -67,7 +77,7 @@
                 flash('Updated!');
             },
 
-            destroy () {
+            destroy() {
                 axios.delete('/replies/' + this.id);
 
                 this.$emit('deleted', this.data.id);
