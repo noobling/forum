@@ -29,29 +29,31 @@
                     </div>
                 </div>
 
-                <replies :data="{{ $thread->replies }}" @removed="repliesCount--"></replies>
+                <replies :data="{{ $thread->replies }}"
+                         @removed="repliesCount--"
+                         @added="repliesCount++"></replies>
 
                 {{--@foreach ($replies as $reply)--}}
                     {{--@include ('threads.reply')--}}
                 {{--@endforeach--}}
 
-                {{ $replies->links() }}
+                {{--{{ $replies->links() }}--}}
 
-                @if (auth()->check())
+                {{--@if (auth()->check())--}}
 
-                    <form action="{{ $thread->path() }}/replies" method="POST">
-                        {{ csrf_field() }}
-                        <div class="form-group">
-                            <textarea class="form-control" name="body" id="" cols="30" rows="10"
-                                      placeholder="Have something to say?"></textarea>
-                        </div>
+                    {{--<form action="{{ $thread->path() }}/replies" method="POST">--}}
+                        {{--{{ csrf_field() }}--}}
+                        {{--<div class="form-group">--}}
+                            {{--<textarea class="form-control" name="body" id="" cols="30" rows="10"--}}
+                                      {{--placeholder="Have something to say?"></textarea>--}}
+                        {{--</div>--}}
 
-                        <button type="submit" class="btn btn-default">Submit</button>
-                    </form>
+                        {{--<button type="submit" class="btn btn-default">Submit</button>--}}
+                    {{--</form>--}}
 
-                @else
-                    <p class="text-center">Please sign in to reply to thread <a href="{{ route('login') }}">here</a></p>
-                @endif
+                {{--@else--}}
+                    {{--<p class="text-center">Please sign in to reply to thread <a href="{{ route('login') }}">here</a></p>--}}
+                {{--@endif--}}
             </div>
             <div class="col-md-4">
                 <div class="panel panel-default">

@@ -21,7 +21,7 @@ class RepliesController extends Controller
      * 
      * @param $channelId
      * @param Thread $thread
-     * @return \Illuminate\Http\RedirectResponse
+     * @return Reply
      */
     public function store($channelId, Thread $thread)
     {
@@ -29,11 +29,14 @@ class RepliesController extends Controller
             'body' => 'required'
         ]);
 
-        $thread->addReply([
+        $reply = $thread->addReply([
             "body" => request('body'),
             "user_id" => auth()->id()
         ]);
 
+        if (\request()->wantsJson()) {
+            return $reply->load('owner');
+        }
         return back()
             ->with('flash', 'Created reply!');
     }
