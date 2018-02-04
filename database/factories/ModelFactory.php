@@ -23,7 +23,7 @@ $factory->define(App\User::class, function (Faker $faker) {
 });
 
 $factory->define(App\Channel::class, function (Faker $faker) {
-    $name = $faker->name;
+    $name = $faker->word;
 
     return [
         'name' => $name,

@@ -21,6 +21,7 @@ class ParticipateInThreadTest extends TestCase
         $this->post($thread->path() . '/replies', $reply->toArray());
             
         $this->get($thread->path())->assertSee($reply->body);
+        $this->assertEquals(1, $thread->fresh()->replies_count);
     }
 
     /** @test */
@@ -34,4 +35,5 @@ class ParticipateInThreadTest extends TestCase
         $this->post($thread->path() . '/replies', $reply->toArray())
             ->assertSessionHasErrors('body');
     }
+
 }

@@ -82,6 +82,19 @@ class ThreadsTest extends TestCase
     }
 
     /** @test */
+    function a_user_can_filter_threads_by_answered()
+    {
+        $thread = create('App\Thread');
+
+        $reply = create('App\Reply', ['thread_id' => $thread->id]);
+
+        $response = $this->getJson('threads?unanswered=1')->json();
+
+        $this->assertCount(1, $response);
+
+    }
+
+    /** @test */
     function an_unauthorized_user_cannot_delete_reply()
     {
         $this->withExceptionHandling();
@@ -146,8 +159,6 @@ class ThreadsTest extends TestCase
         create('App\Reply', ['thread_id' => $thread->id], 2);
 
         $response = $this->getJson($thread->path() . '/replies')->json();
-
-        $this->assertCount(1, $response['data']);
         $this->assertEquals(2, $response['total']);
     }
 }
