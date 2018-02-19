@@ -60,6 +60,8 @@
                     <div class="panel-body">
                         {{ $thread->created_at->diffForHumans() }} by <a href="{{ route('profiles', $thread->creator->name) }}">{{ $thread->creator->name }}</a>
                         with <span v-text="repliesCount"></span> {{ str_plural('reply', $thread->replies_count) }}.
+
+                        <subscribe-button :active="{{ json_encode($thread->isSubscribedTo) }}"></subscribe-button>
                     </div>
                 </div>
             </div>

@@ -26,6 +26,9 @@ Route::post('/threads', 'ThreadsController@store');
 Route::get('/threads/create', 'ThreadsController@create');
 Route::get('/threads/{channel?}', 'ThreadsController@index');
 Route::delete('/threads/{channel}/{thread}', 'ThreadsController@destroy');
+Route::post('/threads/{channel}/{thread}/subscribe', 'SubscriptionsController@store');
+Route::delete('/threads/{channel}/{thread}/subscribe', 'SubscriptionsController@destroy');
+
 
 /**
  * Replies routes
