@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Notifications\ThreadWasUpdated;
 use Illuminate\Database\Eloquent\Model;
 
 class Thread extends Model
@@ -10,7 +11,7 @@ class Thread extends Model
 
     /**
      * Don't auto-apply mass assignment protection.
-     * 
+     *
      * @var array
      */
     protected $guarded = [];
@@ -33,7 +34,7 @@ class Thread extends Model
 //        });
 
         static::deleting(function ($thread) {
-            $thread->replies()->each(function($reply) {
+            $thread->replies()->each(function ($reply) {
                 $reply->delete();
             });
         });
@@ -42,7 +43,7 @@ class Thread extends Model
 
     /**
      * Get an endpoint for the thread
-     * 
+     *
      * @return string
      */
     public function path()
@@ -52,7 +53,7 @@ class Thread extends Model
 
     /**
      * A thread may have many replies.
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function replies()
@@ -62,7 +63,7 @@ class Thread extends Model
 
     /**
      * A thread belongs to a creator
-     * 
+     *
      * @return Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function creator()
@@ -72,23 +73,30 @@ class Thread extends Model
 
     /**
      * A thread belongs to a chanel
-     * 
+     *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      */
     public function channel()
     {
         return $this->belongsTo(Channel::class);
     }
-    
+
     /**
      * Add a reply to a thread
-     * 
+     *
      * @param array $reply
-     * @return Reply
+     * @return Model
      */
     public function addReply($reply)
     {
-        return $this->replies()->create($reply);
+        $reply = $this->replies()->create($reply);
+
+        $this->subscriptions->filter(function ($subscription) use ($reply) {
+            return $subscription->user_id != $reply->user_id;
+        })
+            ->each->notify($reply);
+
+        return $reply;
     }
 
     /**
@@ -109,11 +117,13 @@ class Thread extends Model
      */
     public function subscribe($userId = null)
     {
-        return $this->subscriptions()->create(
+        $this->subscriptions()->create(
             [
-                'user_id' => $userId ?:auth()->id()
+                'user_id' => $userId ?: auth()->id()
             ]
         );
+
+        return $this;
     }
 
     /**
@@ -135,8 +145,8 @@ class Thread extends Model
     public function unsubscribe($userId = null)
     {
         return $this->subscriptions()->where([
-            'user_id' => $userId?: auth()->id()
-            ])
+            'user_id' => $userId ?: auth()->id()
+        ])
             ->delete();
     }
 

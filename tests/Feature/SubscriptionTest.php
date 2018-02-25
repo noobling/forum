@@ -18,12 +18,7 @@ class SubscriptionTest extends TestCase
 
         $this->post($thread->path().'/subscribe');
 
-//        $thread->addReply([
-//            'user_id' => auth()->user()->id(),
-//            'body' => 'good'
-//        ]);
-
-        $this->assertCount(1, $thread->subscriptions);
+        $this->assertCount(1, $thread->fresh()->subscriptions);
     }
 
     /** @test */
