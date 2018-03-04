@@ -93,10 +93,6 @@ class Thread extends Model
         $reply = $this->replies()->create($reply);
 
         event(new ThreadHasNewReply($this, $reply));
-//
-//        $this->subscriptions->where('user_id', '!=', $reply->user_id)
-//            ->each
-//            ->notify($reply);
 
         return $reply;
     }
@@ -152,10 +148,22 @@ class Thread extends Model
             ->delete();
     }
 
+    /**
+     * An attribute that checks if authenticated user is subscribed to the thread
+     *
+     * @return bool
+     */
     public function getIsSubscribedToAttribute()
     {
         return $this->subscriptions()
             ->where('user_id', auth()->id())
             ->exists();
+    }
+
+    public function hasUpdatesFor($user)
+    {
+        $key = sprintf("users.%s.visits.%s", $user->id, $this->id);
+
+        return $this->updated_at > cache($key);
     }
 }

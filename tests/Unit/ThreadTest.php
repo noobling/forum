@@ -117,4 +117,18 @@ class ThreadTest extends TestCase
 
         Notification::assertSentTo(auth()->user(), ThreadWasUpdated::class);
     }
+
+    /** @test */
+    function a_thread_can_determine_if_there_are_updates_for_user()
+    {
+        $this->signIn();
+
+        $thread = create('App\Thread');
+
+        $this->assertTrue($thread->hasUpdatesFor(auth()->user()));
+
+        auth()->user()->read($thread);
+
+        $this->assertFalse($thread->hasUpdatesFor(auth()->user()));
+    }
 }

@@ -161,4 +161,21 @@ class ThreadsTest extends TestCase
         $response = $this->getJson($thread->path() . '/replies')->json();
         $this->assertEquals(2, $response['total']);
     }
+
+    /** @test */
+    function a_user_cannot_add_spam_reply()
+    {
+        $this->signIn();
+
+        $thread = create('App\Thread');
+
+        $reply = make('App\Reply', [
+            'body' => 'spammer'
+        ]);
+
+        $this->expectException(\Exception::Class);
+
+        $this->post($thread->path() . '/replies', $reply->toArray(0));
+
+    }
 }

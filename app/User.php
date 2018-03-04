@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
@@ -40,6 +41,8 @@ class User extends Authenticatable
     }
 
     /**
+     * Has many threads
+     *
      * @return \Illuminate\Database\Query\Builder|static
      */
     public function threads()
@@ -47,8 +50,35 @@ class User extends Authenticatable
         return $this->hasMany(Thread::class)->latest();
     }
 
+    /**
+     * Has many activity
+     *
+     * @return \Illuminate\Database\Query\Builder|static
+     */
     public function activity()
     {
         return $this->hasMany(Activity::class)->latest();
+    }
+
+    /**
+     * @param $thread
+     * @return string
+     * @throws \Exception
+     */
+    public function visitedThreadCacheKey($thread)
+    {
+        return sprintf("users.%s.visits.%s", $this->id, $thread->id);
+    }
+
+    /**
+     * Update the required things when user has read a thread
+     *
+     * @param $thread
+     * @throws \Exception
+     */
+    public function read($thread)
+    {
+        $key = $this->visitedThreadCacheKey($thread);
+        cache()->forever($key, Carbon::now());
     }
 }
