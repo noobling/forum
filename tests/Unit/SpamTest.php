@@ -2,7 +2,7 @@
 
 namespace Tests\Unit;
 
-use App\Spam;
+use App\Inspections\Spam;
 use Tests\TestCase;
 
 class SpamTest extends TestCase
@@ -16,5 +16,18 @@ class SpamTest extends TestCase
         $spam = new Spam();
 
         $this->assertFalse($spam->detect('not spam'));
+    }
+
+    /**
+     * @test
+     * @throws \Exception
+     */
+    function it_can_detect_key_held_down()
+    {
+        $spam = new Spam();
+
+        $this->expectException(\Exception::class);
+
+        $spam->detect('aaaaa');
     }
 }

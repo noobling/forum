@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Channel;
+use App\Inspections\Spam;
 use App\Reply;
-use App\Spam;
 use Illuminate\Http\Request;
 use App\Thread;
 
