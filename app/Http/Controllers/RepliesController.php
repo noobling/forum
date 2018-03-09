@@ -3,9 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Channel;
-use App\Inspections\Spam;
 use App\Reply;
-use Illuminate\Http\Request;
 use App\Thread;
 
 class RepliesController extends Controller
@@ -28,13 +26,11 @@ class RepliesController extends Controller
      *
      * @param $channelId
      * @param Thread $thread
-     * @param Spam $spam
      * @return Reply
      * @throws \Exception
      */
-    public function store($channelId, Thread $thread, Spam $spam)
+    public function store($channelId, Thread $thread)
     {
-        try {
             $this->validateReply();
 
             $reply = $thread->addReply([
@@ -47,9 +43,7 @@ class RepliesController extends Controller
             }
             return back()
                 ->with('flash', 'Created reply!');
-        } catch (\Exception $e) {
-            return response('Failed to store reply', 422);
-        }
+
 
     }
 
@@ -89,9 +83,7 @@ class RepliesController extends Controller
     public function validateReply()
     {
         $this->validate(request(), [
-            'body' => 'required'
+            'body' => 'required|spamfree'
         ]);
-
-        app(Spam::class)->detect(request('body'));
     }
 }
