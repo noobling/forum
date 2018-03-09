@@ -72,13 +72,16 @@
 
         methods: {
             update() {
-                axios.patch('/replies/' + this.id,
-                    {
+                axios.patch('/replies/' + this.id, {
                         body: this.body
+                    })
+                    .then(response => {
+                        flash('Updated!');
+                    })
+                    .catch(error => {
+                       flash('Failed to update please notify an admin', 'danger');
                     });
                 this.editing = false;
-
-                flash('Updated!');
             },
 
             destroy() {

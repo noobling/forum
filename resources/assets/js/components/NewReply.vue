@@ -38,14 +38,16 @@
         methods: {
             addReply() {
                 axios.post(this.endpoint, { body: this.body })
+                    .catch(error => {
+                        flash(error.response.data, 'danger');
+                    })
                     .then(response=> {
                         this.body = '';
-                        console.log(response);
                         this.$emit('created', response.data);
-
 
                         flash('Created reply');
                     })
+
             }
         }
 

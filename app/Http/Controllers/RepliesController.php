@@ -34,19 +34,23 @@ class RepliesController extends Controller
      */
     public function store($channelId, Thread $thread, Spam $spam)
     {
+        try {
+            $this->validateReply();
 
-        $this->validateReply();
+            $reply = $thread->addReply([
+                "body" => request('body'),
+                "user_id" => auth()->id()
+            ]);
 
-        $reply = $thread->addReply([
-            "body" => request('body'),
-            "user_id" => auth()->id()
-        ]);
-
-        if (\request()->wantsJson()) {
-            return $reply->load('owner');
+            if (\request()->wantsJson()) {
+                return $reply->load('owner');
+            }
+            return back()
+                ->with('flash', 'Created reply!');
+        } catch (\Exception $e) {
+            return response('Failed to store reply', 422);
         }
-        return back()
-            ->with('flash', 'Created reply!');
+
     }
 
     /**
