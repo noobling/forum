@@ -173,8 +173,8 @@ class ThreadsTest extends TestCase
             'body' => 'spammer'
         ]);
 
-
-        $this->post($thread->path() . '/replies', $reply->toArray())
+        $this->withExceptionHandling();
+        $this->postJson($thread->path() . '/replies', $reply->toArray())
             ->assertStatus(422);
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Channel;
+use App\Http\Forms\CreatePostForm;
 use App\Reply;
 use App\Thread;
 use Illuminate\Support\Facades\Gate;
@@ -27,18 +28,16 @@ class RepliesController extends Controller
      *
      * @param $channelId
      * @param Thread $thread
+     * @param CreatePostForm $form
      * @return Reply
-     * @throws \Exception
      */
-    public function store($channelId, Thread $thread)
+    public function store($channelId, Thread $thread, CreatePostForm $form)
     {
         if (Gate::denies('create', new Reply)) {
             return response('Woah slow down with your replies', 429);
         }
 
         try {
-            $this->validateReply();
-
             $reply = $thread->addReply([
                 "body" => request('body'),
                 "user_id" => auth()->id()
@@ -83,15 +82,10 @@ class RepliesController extends Controller
     {
         $this->authorize('update', $reply);
 
-        $this->validateReply();
-
-        $reply->update(request(['body']));
-    }
-
-    public function validateReply()
-    {
-        $this->validate(request(), [
+        request()->validate([
             'body' => 'required|spamfree'
         ]);
+
+        $reply->update(request(['body']));
     }
 }
