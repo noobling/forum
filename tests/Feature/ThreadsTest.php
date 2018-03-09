@@ -173,9 +173,26 @@ class ThreadsTest extends TestCase
             'body' => 'spammer'
         ]);
 
-        $this->expectException(\Exception::Class);
 
-        $this->post($thread->path() . '/replies', $reply->toArray(0));
+        $this->post($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(422);
+    }
 
+    /** @test */
+    function a_user_cannot_spam_replies_consecutively()
+    {
+        $this->signIn();
+
+        $thread = create('App\Thread');
+
+        $reply = make('App\Reply', [
+            'body' => 'good body'
+        ]);
+
+        $this->postJson($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(200);
+
+        $this->postJson($thread->path() . '/replies', $reply->toArray())
+            ->assertStatus(429);
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Channel;
 use App\Reply;
 use App\Thread;
+use Illuminate\Support\Facades\Gate;
 
 class RepliesController extends Controller
 {
@@ -31,6 +32,11 @@ class RepliesController extends Controller
      */
     public function store($channelId, Thread $thread)
     {
+        if (Gate::denies('create', new Reply)) {
+            return response('Woah slow down with your replies', 429);
+        }
+
+        try {
             $this->validateReply();
 
             $reply = $thread->addReply([
@@ -43,7 +49,9 @@ class RepliesController extends Controller
             }
             return back()
                 ->with('flash', 'Created reply!');
-
+        } catch(\Exception $e) {
+            return response('Unable to save reply', 422);
+        }
 
     }
 

@@ -27,7 +27,7 @@ class ParticipateInThreadTest extends TestCase
     /** @test */
     public function replies_require_a_body()
     {
-        $this->withExceptionHandling()->signIn();
+        $this->signIn();
 
         $reply = make('App\Reply', ['body' => null]);
         $thread = create('App\Thread');

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Reply extends Model
@@ -49,13 +50,33 @@ class Reply extends Model
         return $this->belongsTo(User::class, 'user_id');
     }
 
+    /**
+     * A reply belongs to a thread
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function thread()
     {
         return $this->belongsTo(Thread::class);
     }
 
+    /**
+     * Get the path of a reply
+     *
+     * @return string
+     */
     public function path()
     {
         return $this->thread->path() . "#reply-{$this->id}";
+    }
+
+    /**
+     * A reply was published recently
+     *
+     * @return bool
+     */
+    public function wasPublishedRecently()
+    {
+        return $this->created_at->gt(Carbon::now()->subMinute());
     }
 }

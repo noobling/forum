@@ -31,4 +31,17 @@ class ReplyPolicy
     {
         return $user->id == $reply->user_id;
     }
+
+    /**
+     * Replies can only be created if user has not replied recently
+     *
+     * @param User $user
+     * @return bool
+     */
+    public function create(User $user)
+    {
+        if (! $user->fresh()->lastReply) { return true; }
+
+        return ! $user->lastReply->wasPublishedRecently();
+    }
 }
