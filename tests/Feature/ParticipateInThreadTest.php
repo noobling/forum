@@ -32,6 +32,8 @@ class ParticipateInThreadTest extends TestCase
         $reply = make('App\Reply', ['body' => null]);
         $thread = create('App\Thread');
 
+        $this->withExceptionHandling();
+
         $this->post($thread->path() . '/replies', $reply->toArray())
             ->assertSessionHasErrors('body');
     }

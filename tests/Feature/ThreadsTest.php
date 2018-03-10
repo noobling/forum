@@ -189,6 +189,8 @@ class ThreadsTest extends TestCase
             'body' => 'good body'
         ]);
 
+        $this->withExceptionHandling();
+
         $this->postJson($thread->path() . '/replies', $reply->toArray())
             ->assertStatus(200);
 

@@ -33,24 +33,17 @@ class RepliesController extends Controller
      */
     public function store($channelId, Thread $thread, CreatePostForm $form)
     {
-        if (Gate::denies('create', new Reply)) {
-            return response('Woah slow down with your replies', 429);
-        }
+        $reply = $thread->addReply([
+            "body" => request('body'),
+            "user_id" => auth()->id()
+        ]);
 
-        try {
-            $reply = $thread->addReply([
-                "body" => request('body'),
-                "user_id" => auth()->id()
-            ]);
-
-            if (\request()->wantsJson()) {
-                return $reply->load('owner');
-            }
-            return back()
-                ->with('flash', 'Created reply!');
-        } catch(\Exception $e) {
-            return response('Unable to save reply', 422);
+        if (\request()->wantsJson()) {
+            return $reply->load('owner');
         }
+        return back()
+            ->with('flash', 'Created reply!');
+
 
     }
 

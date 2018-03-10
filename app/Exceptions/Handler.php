@@ -53,6 +53,11 @@ class Handler extends ExceptionHandler
             return response('Validation error occurred', 422);
         }
 
+        if ($exception instanceof ThrottleException) {
+            return response('You are replying too fast', 429);
+        }
+
+
         return parent::render($request, $exception);
     }
 }
