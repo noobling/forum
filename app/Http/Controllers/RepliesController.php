@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Channel;
 use App\Http\Forms\CreatePostForm;
+use App\Notifications\YouWereMentioned;
 use App\Reply;
 use App\Thread;
+use App\User;
 use Illuminate\Support\Facades\Gate;
 
 class RepliesController extends Controller
@@ -37,6 +39,19 @@ class RepliesController extends Controller
             "body" => request('body'),
             "user_id" => auth()->id()
         ]);
+
+        // Notify all mentioned users
+        preg_match_all('/\@([^\s\.]+)/', $reply->body, $matches);
+
+        $names = $matches[1];
+
+        foreach ($names as $name) {
+            $user = User::whereName($name)->first();
+
+            if ($user) {
+                $user->notify(new YouWereMentioned($reply));
+            }
+        }
 
         if (\request()->wantsJson()) {
             return $reply->load('owner');
