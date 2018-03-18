@@ -2,6 +2,7 @@
 
 namespace Tests\Unit;
 
+use App\Reply;
 use Carbon\Carbon;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -29,5 +30,13 @@ class ReplyTest extends TestCase
         $reply->created_at = Carbon::now()->subMonth();
 
         $this->assertFalse($reply->wasPublishedRecently());
+    }
+
+    /** @test */
+    function it_add_anchors_for_mentioned_users()
+    {
+        $reply = new Reply(['body' => 'Hello @DavidYu.']);
+
+        $this->assertEquals('Hello <a href="/profiles/DavidYu">@DavidYu</a>.', $reply->body);
     }
 }

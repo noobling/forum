@@ -27,7 +27,7 @@
 
             </div>
             <div v-else>
-                <div v-text="body">
+                <div v-html="body">
                 </div>
             </div>
         </div>

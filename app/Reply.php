@@ -23,25 +23,25 @@ class Reply extends Model
      *
      * @var array
      */
-    protected  $appends = ['favouritesCount', 'isFavourited'];
+    protected $appends = ['favouritesCount', 'isFavourited'];
 
     public static function boot()
     {
         parent::boot();
 
         static::creating(function ($reply) {
-           $reply->thread()->increment('replies_count');
+            $reply->thread()->increment('replies_count');
         });
 
         static::deleting(function ($reply) {
-           $reply->thread()->decrement('replies_count');
+            $reply->thread()->decrement('replies_count');
         });
     }
 
 
     /**
      * A reply belongs to an owner
-     * 
+     *
      * return \Illumintate\Database\Eloquent\Relations\BelongsTo
      */
     public function owner()
@@ -78,5 +78,10 @@ class Reply extends Model
     public function wasPublishedRecently()
     {
         return $this->created_at->gt(Carbon::now()->subMinute());
+    }
+
+    public function setBodyAttribute($body)
+    {
+        $this->attributes['body'] = preg_replace('/@([\w\-]+)/', '<a href="/profiles/$1">$0</a>', $body);
     }
 }
