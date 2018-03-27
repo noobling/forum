@@ -3,7 +3,7 @@
         <div v-if="signedIn">
             <div class="form-group">
             <textarea class="form-control"
-                      id=""
+                      id="body"
                       cols="30"
                       rows="10"
                       placeholder="Have something to say?"
@@ -20,6 +20,9 @@
     </div>
 </template>
 <script>
+    import 'at.js';
+    import 'jquery.caret';
+
     export default {
         props: ['endpoint'],
 
@@ -33,6 +36,20 @@
             signedIn() {
                 return window.App.signedIn;
             }
+        },
+
+        mounted() {
+            $('#body').atwho({
+                at: '@',
+                delay: 750,
+                callbacks: {
+                    remoteFilter: function(query, callback) {
+                        $.getJSON('/api/users', {name: query}, function(users) {
+                            callback(users);
+                        })
+                    }
+                }
+            })
         },
 
         methods: {
