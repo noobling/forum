@@ -151,8 +151,6 @@ class ThreadsController extends Controller
             $threads = $channel->threads()->latest();
         }
 
-        $threads = $threads->get();
-
-        return $threads;
+        return $threads->paginate(5);
     }
 }
