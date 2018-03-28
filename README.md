@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/noobling/forum.svg?branch=master)](https://travis-ci.org/noobling/forum)
+
 # Notes
 
 ## Testing
