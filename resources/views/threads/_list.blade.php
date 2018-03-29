@@ -12,7 +12,10 @@
                         @endif
                     </h4>
 
-                    <h5>Posted by: <a href="{{ route('profiles', $thread->creator) }}">{{ $thread->creator->name }}</a>
+                    <h5>
+                        Posted by:
+                        <a href="{{ route('profiles', $thread->creator) }}">{{ $thread->creator->name }}</a>
+                        <img src="{{ asset('/storage/' . $thread->creator->avatar()) }}" alt="" width="25" height="25">
                     </h5>
                 </div>
 
