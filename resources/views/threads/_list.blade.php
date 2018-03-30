@@ -15,7 +15,7 @@
                     <h5>
                         Posted by:
                         <a href="{{ route('profiles', $thread->creator) }}">{{ $thread->creator->name }}</a>
-                        <img src="{{ asset('/storage/' . $thread->creator->avatar()) }}" alt="" width="25" height="25">
+                        <img src="{{ $thread->creator->avatar_path }}" alt="" width="25" height="25">
                     </h5>
                 </div>
 
