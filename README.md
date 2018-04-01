@@ -1,6 +1,13 @@
 [![Build Status](https://travis-ci.org/noobling/forum.svg?branch=master)](https://travis-ci.org/noobling/forum)
 
-# Notes
+## Features
+* Reply Throttling
+* Memcache
+* Advanced query filtering
+* Extensive testing
+* Redis
+
+## Notes
 
 ## Testing
 
