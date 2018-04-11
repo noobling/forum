@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Trending;
 use Illuminate\Support\Facades\Redis;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -15,17 +16,19 @@ class TrendingThreadsTest extends TestCase
     {
         parent::setUp();
 
-        Redis::del('trending_threads');
+        $this->trending = new Trending();
+
+        $this->trending->reset();
     }
 
     /** @test */
     function it_can_increment_a_trending_thread_count()
     {
-        $this->assertEmpty(Redis::zrevrange('trending_threads', 0, -1));
+        $this->assertEmpty(Redis::zrevrange($this->trending->cacheKey(), 0, -1));
 
         $thread = create('App\Thread');
         $this->call('GET', $thread->path());
 
-        $this->assertCount(1, Redis::zrevrange('trending_threads', 0, -1));
+        $this->assertCount(1, Redis::zrevrange($this->trending->cacheKey(), 0, -1));
     }
 }
