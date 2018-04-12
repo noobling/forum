@@ -28,6 +28,10 @@
         <div class="panel-body">
             <p>{{ $thread->body }}</p>
         </div>
+
+        <div class="panel-footer">
+            {{ $thread->visits()}} Visits
+        </div>
     </div>
 
 @empty
