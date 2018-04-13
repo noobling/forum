@@ -42,3 +42,7 @@ Beware of too many database queries especially if you have a loop
 Getting the element then fading it out
 $(this.$el).fadeOut(300, () => {
 })
+
+## Refactoring
+Having compound words suggests that things can be refactored maybe
+e.g. visitsCount() Maybe refactored into a visits class

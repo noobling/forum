@@ -3,13 +3,11 @@
 namespace App;
 
 use App\Events\ThreadHasNewReply;
-use App\Notifications\ThreadWasUpdated;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Redis;
 
 class Thread extends Model
 {
-    use RecordsActivity, RecordsVisits;
+    use RecordsActivity;
 
     /**
      * Don't auto-apply mass assignment protection.
@@ -166,6 +164,11 @@ class Thread extends Model
         $key = sprintf("users.%s.visits.%s", $user->id, $this->id);
 
         return $this->updated_at > cache($key);
+    }
+
+    public function visits()
+    {
+        return new Visits($this);
     }
 
 }

@@ -30,7 +30,7 @@
         </div>
 
         <div class="panel-footer">
-            {{ $thread->visits() }} {{ str_plural('Visit', $thread->visits())}}
+            {{ $thread->visits()->count() }} {{ str_plural('Visit', $thread->visits()->count())}}
         </div>
     </div>
 
