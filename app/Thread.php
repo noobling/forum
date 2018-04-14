@@ -159,6 +159,13 @@ class Thread extends Model
             ->exists();
     }
 
+    /**
+     * Returns whether thread was upadted since users last view
+     *
+     * @param $user
+     * @return bool
+     * @throws \Exception
+     */
     public function hasUpdatesFor($user)
     {
         $key = sprintf("users.%s.visits.%s", $user->id, $this->id);
@@ -166,6 +173,11 @@ class Thread extends Model
         return $this->updated_at > cache($key);
     }
 
+    /**
+     * Return an instance of the visit class
+     *
+     * @return Visits
+     */
     public function visits()
     {
         return new Visits($this);

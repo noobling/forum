@@ -29,11 +29,19 @@ class Trending
         ]));
     }
 
+    /**
+     * Delete trending threads
+     */
     public function reset()
     {
         Redis::del($this->cacheKey());
     }
 
+    /**
+     * Get cache key for trending
+     *
+     * @return string
+     */
     public function cacheKey()
     {
         return app()->environment('testing') ? 'testing_trending_threads': 'trending_threads';
