@@ -47,6 +47,14 @@ class CreateThreadsTest extends TestCase
     }
 
     /** @test */
+    public function a_user_cannot_create_a_thread_without_a_verified_email()
+    {
+        $this->publishThread()
+            ->assertRedirect('/threads')
+            ->assertSessionHas('flash');
+    }
+
+    /** @test */
     public function a_thread_requires_a_title()
     {
         $this->publishThread(['title' => null])

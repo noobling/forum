@@ -5,19 +5,19 @@
 
 <script>
     export default {
-        props: ['data'],
+        props: ['message'],
 
         data() {
             return {
-                body: '',
+                body: this.message,
                 show: false,
                 level: 'success'
             }
         },
 
         created() {
-            if (this.message) {
-                this.flash(this.message);
+            if (this.body) {
+                this.flash();
             }
 
             window.events.$on('flash', data => {
@@ -27,8 +27,11 @@
 
         methods: {
             flash(data) {
-                this.body = data.message;
-                this.level = data.level;
+                if (data) {
+                    this.body = data.message;
+                    this.level = data.level;
+                }
+
                 this.show = true;
 
                 this.hide()

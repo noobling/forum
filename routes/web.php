@@ -22,7 +22,7 @@ Route::get('/', function () {
  * Threads routes
  */
 Route::get('/threads/{channel}/{thread}', 'ThreadsController@show');
-Route::post('/threads', 'ThreadsController@store');
+Route::post('/threads', 'ThreadsController@store')->middleware('needs-verified-email');
 Route::get('/threads/create', 'ThreadsController@create');
 Route::get('/threads/{channel?}', 'ThreadsController@index');
 Route::delete('/threads/{channel}/{thread}', 'ThreadsController@destroy');

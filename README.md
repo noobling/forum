@@ -6,6 +6,9 @@
 * Advanced query filtering
 * Extensive testing
 * Redis
+* Middleware
+* Notifications
+* Policies
 
 ## Notes
 
