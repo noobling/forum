@@ -49,3 +49,8 @@ $(this.$el).fadeOut(300, () => {
 ## Refactoring
 Having compound words suggests that things can be refactored maybe
 e.g. visitsCount() Maybe refactored into a visits class
+
+## Casting model data types
+`protected $cast = [
+    'attribute' => 'boolean'
+]`

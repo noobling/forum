@@ -29,6 +29,15 @@ class User extends Authenticatable
     ];
 
     /**
+     * Change these attributes data type
+     *
+     * @var array
+     */
+    protected $casts = [
+        'verified' => 'boolean'
+    ];
+
+    /**
      * This is used for route model binding generally the key to search for is an id
      * however in our routes we don't want to use /endpoint/{id} instead this would
      * be nicer /endpoint/{name}
