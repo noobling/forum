@@ -3,7 +3,7 @@
 
 Just one more step to prevent spam and to keep you safe
 
-@component('mail::button', ['url' => ''])
+@component('mail::button', ['url' => url('/register/confirmation?token='.$user->confirmation_token)])
 Confirm Email
 @endcomponent
 

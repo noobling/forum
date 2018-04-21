@@ -24,7 +24,7 @@ Route::get('/', function () {
 Route::get('/threads/{channel}/{thread}', 'ThreadsController@show');
 Route::post('/threads', 'ThreadsController@store')->middleware('needs-verified-email');
 Route::get('/threads/create', 'ThreadsController@create');
-Route::get('/threads/{channel?}', 'ThreadsController@index');
+Route::get('/threads/{channel?}', 'ThreadsController@index')->name('threads');
 Route::delete('/threads/{channel}/{thread}', 'ThreadsController@destroy');
 Route::post('/threads/{channel}/{thread}/subscribe', 'SubscriptionsController@store');
 Route::delete('/threads/{channel}/{thread}/subscribe', 'SubscriptionsController@destroy');
@@ -56,3 +56,5 @@ Route::get('/api/users', 'Api\UsersController@index');
 Route::post('/api/users/{user}/avatars', 'Api\UsersAvatarsController@store')->name('avatars');
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('/register/confirmation', 'Api\RegisterConfirmationController@index')->name('register.confirm');

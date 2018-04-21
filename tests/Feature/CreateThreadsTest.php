@@ -17,7 +17,7 @@ class CreateThreadsTest extends TestCase
 
         $thread = make('App\Thread');
 
-        $response = $this->post('/threads', $thread->toArray());
+        $response = $this->post(route('threads'), $thread->toArray());
 
         $this->get($response->headers->get('Location'))
             ->assertStatus(200)
@@ -32,10 +32,10 @@ class CreateThreadsTest extends TestCase
         $this->withExceptionHandling();
 
         $this->get('/threads/create')
-            ->assertRedirect('/login');
+            ->assertRedirect(route('login'));
         
-        $this->post('/threads')
-            ->assertRedirect('/login');
+        $this->post(route('threads'))
+            ->assertRedirect(route('login'));
     }
 
     /** @test */
@@ -43,13 +43,17 @@ class CreateThreadsTest extends TestCase
     {
         $this->withExceptionHandling()
             ->get('/threads/create')
-            ->assertRedirect('/login');
+            ->assertRedirect(route('login'));
     }
 
     /** @test */
     public function a_user_cannot_create_a_thread_without_a_verified_email()
     {
-        $this->publishThread()
+        $user = factory('App\User')->states('unconfirmed')->create();
+
+        $this->signIn($user);
+        $thread = make('App\Thread');
+        $this->post('/threads', $thread->toArray())
             ->assertRedirect('/threads')
             ->assertSessionHas('flash');
     }
