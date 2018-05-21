@@ -52,8 +52,6 @@ class RegistrationTest extends TestCase
     /** @test */
     public function cannot_verify_with_invalid_token()
     {
-        $this->withExceptionHandling();
-
         $this->get(route('register.confirm'), ['token' => 'invalid'])
             ->assertRedirect(route('threads'))
             ->assertSessionHas('flash', 'Unknown token');

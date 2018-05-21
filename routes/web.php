@@ -57,4 +57,4 @@ Route::post('/api/users/{user}/avatars', 'Api\UsersAvatarsController@store')->na
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::get('/register/confirmation', 'Api\RegisterConfirmationController@index')->name('register.confirm');
+Route::get('/register/confirmation', 'Auth\RegisterConfirmationController@index')->name('register.confirm');
