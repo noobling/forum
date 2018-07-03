@@ -39029,12 +39029,24 @@ if (token) {
 
 window.Vue = __webpack_require__(13);
 
-// A global function accessible to all Vue components
-Vue.prototype.authorize = function (handler) {
-    var user = window.App.user;
+var authorizations = __webpack_require__(212);
 
-    return user ? handler(user) : false;
+// A global function accessible to all Vue components
+Vue.prototype.authorize = function () {
+    if (!window.App.signedIn) return false;
+
+    for (var _len = arguments.length, params = Array(_len), _key = 0; _key < _len; _key++) {
+        params[_key] = arguments[_key];
+    }
+
+    if (typeof params[0] === 'string') {
+        return authorizations[params[0]](params[1]);
+    }
+
+    return params[0](window.App.user);
 };
+
+Vue.prototype.signedIn = window.App.signedIn;
 
 window.events = new Vue();
 
@@ -60192,22 +60204,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             editing: false,
             id: this.data.id,
             body: this.data.body,
-            isBest: false
+            isBest: false,
+            reply: this.data
         };
     },
 
 
     computed: {
-        signedIn: function signedIn() {
-            return window.App.signedIn;
-        },
-        canUpdate: function canUpdate() {
-            var _this = this;
-
-            return this.authorize(function (user) {
-                return user.id === _this.data.user_id;
-            });
-        },
         createdTime: function createdTime() {
             return __WEBPACK_IMPORTED_MODULE_1_moment___default()(this.data.created_at).fromNow() + '...';
         }
@@ -60719,7 +60722,7 @@ var render = function() {
             ])
       ]),
       _vm._v(" "),
-      _vm.canUpdate
+      _vm.authorize("updateReply", _vm.reply)
         ? _c("div", { staticClass: "panel-footer level" }, [
             _c(
               "button",
@@ -63372,6 +63375,27 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 203 */,
+/* 204 */,
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */
+/***/ (function(module, exports) {
+
+var user = window.App.user;
+
+module.exports = {
+    updateReply: function updateReply(reply) {
+        return reply.user_id === user.id;
+    }
+};
 
 /***/ })
 /******/ ]);

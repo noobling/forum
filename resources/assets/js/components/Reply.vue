@@ -33,7 +33,7 @@
         </div>
 
 
-        <div class="panel-footer level" v-if="canUpdate">
+        <div class="panel-footer level" v-if="authorize('updateReply', reply)">
             <button type="submit" class="btn btn-danger mr-1" @click="destroy">Delete</button>
             <button class="btn btn-warning" @click="editing = true">Update</button>
             <button class="btn btn-default ml-a" @click="markBestReply" v-show="!isBest">Best Reply</button>
@@ -55,21 +55,15 @@
                 editing: false,
                 id: this.data.id,
                 body: this.data.body,
-                isBest: false
+                isBest: false,
+                reply: this.data
             };
         },
 
         computed: {
-            signedIn() {
-                return window.App.signedIn;
-            },
-            canUpdate() {
-                return this.authorize(user => user.id === this.data.user_id);
-            },
             createdTime() {
                 return moment(this.data.created_at).fromNow() + '...';
             }
-
         },
 
         methods: {
