@@ -1,5 +1,5 @@
 <template>
-    <div :id="'reply-'+id" class="panel panel-default">
+    <div :id="'reply-'+id" class="panel" :class="isBest? 'panel-success': 'panel-default'">
         <div class="panel-heading">
             <div class="level">
                 <h5 class="flex">
@@ -36,6 +36,7 @@
         <div class="panel-footer level" v-if="canUpdate">
             <button type="submit" class="btn btn-danger mr-1" @click="destroy">Delete</button>
             <button class="btn btn-warning" @click="editing = true">Update</button>
+            <button class="btn btn-default ml-a" @click="markBestReply" v-show="!isBest">Best Reply</button>
         </div>
     </div>
 </template>
@@ -54,6 +55,7 @@
                 editing: false,
                 id: this.data.id,
                 body: this.data.body,
+                isBest: false
             };
         },
 
@@ -93,6 +95,10 @@
                     flash('Deleted!');
                 });
 
+            },
+
+            markBestReply() {
+                this.isBest = true;
             }
         }
     }

@@ -35,6 +35,10 @@
         margin-right: 1rem;
     }
 
+    .ml-a {
+        margin-left: auto;
+    }
+
     [v-cloak] {
         display: none;
     }
