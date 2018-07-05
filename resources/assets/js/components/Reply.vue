@@ -50,12 +50,18 @@
 
         components: {Favourite},
 
+        created () {
+            window.events.$on('best-reply-selected', id => {
+                this.isBest = (this.id === id)
+            })
+        },
+
         data() {
             return {
                 editing: false,
                 id: this.data.id,
                 body: this.data.body,
-                isBest: false,
+                isBest: this.data.isBest,
                 reply: this.data
             };
         },
@@ -92,7 +98,10 @@
             },
 
             markBestReply() {
-                this.isBest = true;
+                axios.post('/replies/' + this.reply.id + '/best')
+                    .then(() => {
+                        window.events.$emit('best-reply-selected', this.id)
+                    })
             }
         }
     }
