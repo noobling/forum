@@ -35,6 +35,9 @@ class Reply extends Model
 
         static::deleting(function ($reply) {
             $reply->thread()->decrement('replies_count');
+            if ($reply->isBest()) {
+                $reply->thread->update(['best_reply_id' => null]);
+            }
         });
     }
 
@@ -90,11 +93,21 @@ class Reply extends Model
         $this->attributes['body'] = preg_replace('/@([\w\-]+)/', '<a href="/profiles/$1">$0</a>', $body);
     }
 
+    /**
+     * Determine if the current reply is marked as the best
+     *
+     * @return bool
+     */
     public function isBest()
     {
         return $this->thread->best_reply_id == $this->id;
     }
 
+    /**
+     * Determine if the current reply is marked as the best
+     *
+     * @return bool
+     */
     public function getIsBestAttribute()
     {
         return $this->isBest();
