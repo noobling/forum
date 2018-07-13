@@ -33,7 +33,7 @@ Route::delete('/threads/{channel}/{thread}/subscribe', 'SubscriptionsController@
 /**
  * Replies routes
  */
-Route::post('threads/{channel}/{thread}/replies', 'RepliesController@store');
+Route::post('threads/{channel}/{thread}/replies', 'RepliesController@store')->name('replies.store');
 Route::get('threads/{channel}/{thread}/replies', 'RepliesController@index');
 Route::delete('/replies/{reply}', 'RepliesController@destroy')->name('replies.destroy');
 Route::patch('/replies/{reply}', 'RepliesController@update');

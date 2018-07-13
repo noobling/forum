@@ -151,6 +151,11 @@ class Thread extends Model
             ->delete();
     }
 
+    public function lock()
+    {
+        $this->update(['locked' => true]);
+    }
+
     /**
      * An attribute that checks if authenticated user is subscribed to the thread
      *
