@@ -54,3 +54,7 @@ e.g. visitsCount() Maybe refactored into a visits class
 `protected $cast = [
     'attribute' => 'boolean'
 ]`
+
+## Testing
+* Add extra error message to make error more clear `        $this->assertTrue(!!$thread->fresh()->locked, 'Failed asserting the thread was locked');
+`

@@ -29,6 +29,7 @@ Route::delete('/threads/{channel}/{thread}', 'ThreadsController@destroy');
 Route::post('/threads/{channel}/{thread}/subscribe', 'SubscriptionsController@store');
 Route::delete('/threads/{channel}/{thread}/subscribe', 'SubscriptionsController@destroy');
 
+Route::post('/lock-thread/{thread}', 'LockThreadsController@store')->name('lock-thread.store')->middleware('admin');
 
 /**
  * Replies routes

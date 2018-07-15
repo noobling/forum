@@ -100,4 +100,9 @@ class User extends Authenticatable
     {
         return asset($avatar ? '/storage/' .  $avatar: '/storage/avatars/default.jpg');
     }
+
+    public function isAdmin()
+    {
+        return in_array($this->name , ['david']);
+    }
 }
