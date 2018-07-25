@@ -5,7 +5,7 @@
 @endsection
 
 @section('content')
-    <thread-view :initial-replies-count="{{ $thread->replies_count }}" inline-template>
+    <thread-view :initial-replies-count="{{ $thread->replies_count }}" :data-locked="{{ $thread->locked  }}"inline-template>
         <div class="container">
             <div class="row">
                 <div class="col-md-8">
@@ -66,7 +66,9 @@
                                     href="{{ route('profiles', $thread->creator->name) }}">{{ $thread->creator->name }}</a>
                             with <span v-text="repliesCount"></span> {{ str_plural('reply', $thread->replies_count) }}.
 
-                            <subscribe-button :active="{{ json_encode($thread->isSubscribedTo) }}"></subscribe-button>
+                            <subscribe-button :active="{{ json_encode($thread->isSubscribedTo) }}" v-if="signedIn"></subscribe-button>
+
+                            <button class="btn btn-default" v-if="authorize('isAdmin') && !locked" @click="lock">Lock Thread</button>
                         </div>
                     </div>
                 </div>

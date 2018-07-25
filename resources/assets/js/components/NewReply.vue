@@ -11,7 +11,8 @@
             </textarea>
             </div>
 
-            <button type="submit" class="btn btn-default" @click="addReply">Submit</button>
+            <p v-if="threadLocked">Sorry Thread has been locked you cannot reply!</p>
+            <button type="submit" class="btn btn-default" @click="addReply" v-else>Submit</button>
         </div>
         <div v-else>
             <p class="text-center">Please sign in to reply to thread <a href="/login">here</a></p>
@@ -28,7 +29,8 @@
 
         data() {
             return {
-                body: ''
+                body: '',
+                threadLocked: this.$parent.locked
             }
         },
 
@@ -36,6 +38,12 @@
             signedIn() {
                 return window.App.signedIn;
             }
+        },
+
+        created () {
+            window.events.$on('LockedThread', () => {
+                this.threadLocked = true
+            })
         },
 
         mounted() {

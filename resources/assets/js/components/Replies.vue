@@ -3,7 +3,6 @@
         <div v-for="(reply, index) in items" :key="reply.id">
             <reply :reply="reply" @deleted="remove(index)"></reply>
         </div>
-
         <paginator :data="dataSet" @updated="fetch"></paginator>
 
         <new-reply @created="add" :endpoint="endpoint"></new-reply>
@@ -25,7 +24,8 @@
         data () {
             return {
                 dataSet: null,
-                endpoint: location.pathname + '/replies'
+                endpoint: location.pathname + '/replies',
+                locked: this.$parent.locked
             }
         },
 

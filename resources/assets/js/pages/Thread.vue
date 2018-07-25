@@ -4,10 +4,18 @@
 
     export default {
         components: { Replies, SubscribeButton },
-        props: ['initialRepliesCount'],
+        props: ['initialRepliesCount', 'dataLocked'],
         data() {
             return {
-                repliesCount: this.initialRepliesCount
+                repliesCount: this.initialRepliesCount,
+                locked: this.dataLocked
+            }
+        },
+
+        methods: {
+            lock: function () {
+                this.locked = true
+                window.events.$emit('LockedThread')
             }
         }
     }

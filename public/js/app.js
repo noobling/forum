@@ -59708,6 +59708,9 @@ module.exports = {
         var prop = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'user_id';
 
         return model[prop] === user.id;
+    },
+    isAdmin: function isAdmin() {
+        return ['David', 'david'].includes(user.name);
     }
 };
 
@@ -59982,11 +59985,20 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     components: { Replies: __WEBPACK_IMPORTED_MODULE_0__components_Replies_vue___default.a, SubscribeButton: __WEBPACK_IMPORTED_MODULE_1__components_SubscribeButton_vue___default.a },
-    props: ['initialRepliesCount'],
+    props: ['initialRepliesCount', 'dataLocked'],
     data: function data() {
         return {
-            repliesCount: this.initialRepliesCount
+            repliesCount: this.initialRepliesCount,
+            locked: this.dataLocked
         };
+    },
+
+
+    methods: {
+        lock: function lock() {
+            this.locked = true;
+            window.events.$emit('LockedThread');
+        }
     }
 });
 
@@ -60059,7 +60071,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
@@ -60075,7 +60086,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             dataSet: null,
-            endpoint: location.pathname + '/replies'
+            endpoint: location.pathname + '/replies',
+            locked: this.$parent.locked
         };
     },
     created: function created() {
@@ -60891,6 +60903,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -60900,7 +60913,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     data: function data() {
         return {
-            body: ''
+            body: '',
+            threadLocked: this.$parent.locked
         };
     },
 
@@ -60911,6 +60925,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }
     },
 
+    created: function created() {
+        var _this = this;
+
+        window.events.$on('LockedThread', function () {
+            _this.threadLocked = true;
+        });
+    },
     mounted: function mounted() {
         $('#body').atwho({
             at: '@',
@@ -60928,13 +60949,13 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
     methods: {
         addReply: function addReply() {
-            var _this = this;
+            var _this2 = this;
 
             axios.post(this.endpoint, { body: this.body }).catch(function (error) {
                 flash(error.response.data, 'danger');
             }).then(function (response) {
-                _this.body = '';
-                _this.$emit('created', response.data);
+                _this2.body = '';
+                _this2.$emit('created', response.data);
 
                 flash('Created reply');
             });
@@ -62640,15 +62661,19 @@ var render = function() {
             })
           ]),
           _vm._v(" "),
-          _c(
-            "button",
-            {
-              staticClass: "btn btn-default",
-              attrs: { type: "submit" },
-              on: { click: _vm.addReply }
-            },
-            [_vm._v("Submit")]
-          )
+          _vm.threadLocked
+            ? _c("p", [
+                _vm._v("Sorry Thread has been locked you cannot reply!")
+              ])
+            : _c(
+                "button",
+                {
+                  staticClass: "btn btn-default",
+                  attrs: { type: "submit" },
+                  on: { click: _vm.addReply }
+                },
+                [_vm._v("Submit")]
+              )
         ])
       : _c("div", [_vm._m(0)])
   ])
